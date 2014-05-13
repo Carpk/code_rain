@@ -5,6 +5,6 @@ RSpec::Core::RakeTask.new(:spec)
 task :rspec => :spec
 
 task :run do
-  ruby "lib/console.rb"
+  ruby "bin/code_rain"
 end
 

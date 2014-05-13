@@ -6,7 +6,7 @@ class CodeRain
     @data = ModelRain.new
   end
 
-  def run
+  def run_two
     @rain = @view.rain_new
     while true
 
@@ -14,7 +14,7 @@ class CodeRain
     end
   end
 
-  def run_two
+  def run
     @rain = @view.rain
     while true
       @view.clear_screen
