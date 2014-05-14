@@ -4,4 +4,8 @@ Something like the code rain from the move The Matrix.
 
 ### Getting Started
 
-the application is not functional yet.
+only one speed has been implemented
+
+To run the app:
+
+`rake run`
