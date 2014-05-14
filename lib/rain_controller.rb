@@ -13,7 +13,7 @@ class CodeRain
       rain = @view.rain_new
       rain_speed += 1
 
-      rain = slow_rain(rain) #if rain_speed % 2 == 0
+      rain = slow_rain(rain, rain_speed)
       # med_rain(rain) if rain_speed % 3 == 0
       # fast_rain(rain) if rain_speed % 2 == 0
       @view.clear_screen
@@ -23,20 +23,17 @@ class CodeRain
     end
   end
 
-  def slow_rain(grid)
-    @slow_drops << {row: 0, col: rand(0..(grid.length * 2)), droplet: @data.rain_drop} if rand(1..3) == 2
+  def slow_rain(grid, speed)
+    @slow_drops << {row: 0, col: rand(0..(grid[0].length)), droplet: @data.create_drop} if rand(1..3) == 2
 
     @slow_drops.each do |drop|
       drop[:droplet].each_with_index do |value, index|
+        next unless (0..grid.length-1).include?(drop[:row]-index)
         grid[drop[:row] - index][drop[:col]] = value
       end
-      drop[:row] += 1
+      drop[:row] += 1 if speed % 2 == 0
     end
-    puts @slow_drops.length
-    @slow_drops.delete_if {|obj| obj[:row] > 30}
-
-    @slow_drops.compact!
-    puts @slow_drops.length
+    @slow_drops.delete_if {|obj| obj[:row] > grid.length + obj[:droplet].length}.compact!
     grid
   end
 
@@ -48,15 +45,6 @@ class CodeRain
 
   end
 
-  # def sample
-  #   @rain = @view.rain
-  #   while true
-  #     @rain = @data.set_downfall(@rain)
-  #     @view.clear_screen
-  #     @view.grid_rain(@rain)
-  #     sleep(0.10)
-  #   end
-  # end
 end
 
 =begin
@@ -67,5 +55,7 @@ each iteration will add that rain drop's position
 
  {:row=>3, :col=>8, :age=>4, :drop=>["r", "X", "k"]}
 
+@slow_drops.map! {|obj| obj = nil if obj[:row] > 60}
+next if drop[:row] > grid.length - 1
 rand(0..grid.length)
 =end

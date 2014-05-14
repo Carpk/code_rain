@@ -6,7 +6,7 @@ class ModelRain
     rain.unshift(top_fall)
   end
 
-  def rain_drop
+  def create_drop
     drop = Array.new(rand(5..13))
     drop.map! {|droplet| droplet = rand(49..122).chr}
   end
