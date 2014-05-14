@@ -12,9 +12,9 @@ class CodeRain
       rain = @rain_new
       rain_speed += 1
 
-      fast_rain if rain_speed % 2 == 0
-      med_rain if rain_speed % 3 == 0
       slow_rain if rain_speed % 5 == 0
+      med_rain if rain_speed % 3 == 0
+      fast_rain if rain_speed % 2 == 0
 
       @view.grid_rain(rain)
       sleep(0.10)
@@ -22,7 +22,7 @@ class CodeRain
     end
   end
 
-  def fast_rain
+  def slow_rain
 
   end
 
@@ -30,7 +30,7 @@ class CodeRain
 
   end
 
-  def slow_rain
+  def fast_rain
 
   end
 
