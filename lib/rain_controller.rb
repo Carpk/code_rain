@@ -7,20 +7,40 @@ class CodeRain
   end
 
   def run_two
-    @rain = @view.rain_new
+    rain_speed = 0
     while true
+      rain = @rain_new
+      rain_speed += 1
 
-      sleep(0.25)
+      fast_rain if rain_speed % 2 == 0
+      med_rain if rain_speed % 3 == 0
+      slow_rain if rain_speed % 5 == 0
+
+      @view.grid_rain(rain)
+      sleep(0.10)
+      rain_speed = 0 if rain_speed >= 30
     end
+  end
+
+  def fast_rain
+
+  end
+
+  def med_rain
+
+  end
+
+  def slow_rain
+
   end
 
   def run
     @rain = @view.rain
     while true
-      @view.clear_screen
       @rain = @data.set_downfall(@rain)
+      @view.clear_screen
       @view.grid_rain(@rain)
-      sleep(0.25)
+      sleep(0.10)
     end
   end
 end
@@ -28,5 +48,10 @@ end
 =begin
 it should choose a column to fall down
 each iteration will add that rain drop's position
+
+
+
+
+
 
 =end
