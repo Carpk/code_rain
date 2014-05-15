@@ -1,10 +1,9 @@
 ## Code Rain
 
-Something like the code rain from the move The Matrix.
+Code rain from the movie The Matrix, ran using Ruby.
 
 ### Getting Started
 
-only one speed has been implemented
 
 To run the app:
 
