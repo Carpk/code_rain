@@ -4,9 +4,7 @@ class CodeRain
   def initialize
     @view = ViewRain.new
     @data = ModelRain.new
-    @slow_drops = []
-    @med_drops = []
-    @fast_drops = []
+    @bucket = [[[],5,4],[[],3,8],[[],2,16]]
   end
 
   def run
@@ -15,9 +13,10 @@ class CodeRain
       rain = @view.rain_new
       rain_speed += 1
 
-      rain = slow_rain(rain, rain_speed)
-      rain = med_rain(rain, rain_speed)
-      rain = fast_rain(rain, rain_speed)
+      @bucket.each do |param|
+        rain = rain_fall(rain, param[0], rain_speed, param[1], param[2])
+      end
+
       @view.clear_screen
       @view.grid_rain(rain)
       sleep(0.05)
@@ -25,45 +24,17 @@ class CodeRain
     end
   end
 
-  def slow_rain(grid, speed)
-    @slow_drops << {row: 0, col: rand(0..(grid[0].length)), droplet: @data.create_drop} if rand(1..4) == 2
+  def rain_fall(grid, bucket, speed, rs_divisor, gen_ratio)
+    bucket << {row: 0, col: rand(0..(grid[0].length)), droplet: @data.create_drop} if rand(1..gen_ratio) == 2
 
-    @slow_drops.each do |drop|
+    bucket.each do |drop|
       drop[:droplet].each_with_index do |value, index|
         next unless (0..grid.length-1).include?(drop[:row]-index)
         grid[drop[:row] - index][drop[:col]] = value
       end
-      drop[:row] += 1 if speed % 5 == 0
+      drop[:row] += 1 if speed % rs_divisor == 0
     end
-    @slow_drops.delete_if {|obj| obj[:row] > grid.length + obj[:droplet].length}.compact!
-    grid
-  end
-
-  def med_rain(grid,speed)
-    @med_drops << {row: 0, col: rand(0..(grid[0].length)), droplet: @data.create_drop} if rand(1..8) == 2
-
-    @med_drops.each do |drop|
-      drop[:droplet].each_with_index do |value, index|
-        next unless (0..grid.length-1).include?(drop[:row]-index)
-        grid[drop[:row] - index][drop[:col]] = value
-      end
-      drop[:row] += 1 if speed % 3 == 0
-    end
-    @med_drops.delete_if {|obj| obj[:row] > grid.length + obj[:droplet].length}.compact!
-    grid
-  end
-
-  def fast_rain(grid,speed)
-    @fast_drops << {row: 0, col: rand(0..(grid[0].length)), droplet: @data.create_drop} if rand(1..16) == 2
-
-    @fast_drops.each do |drop|
-      drop[:droplet].each_with_index do |value, index|
-        next unless (0..grid.length-1).include?(drop[:row]-index)
-        grid[drop[:row] - index][drop[:col]] = value
-      end
-      drop[:row] += 1 if speed % 2 == 0
-    end
-    @fast_drops.delete_if {|obj| obj[:row] > grid.length + obj[:droplet].length}.compact!
+    bucket.delete_if {|obj| obj[:row] > grid.length + obj[:droplet].length}.compact!
     grid
   end
 
@@ -76,6 +47,10 @@ each iteration will add that rain drop's position
 {slow: [r,x,K]}
 
  {:row=>3, :col=>8, :age=>4, :drop=>["r", "X", "k"]}
+
+[[drops: [],rs_div: 5,gen_ratio: 4],
+ [drops: [],rs_div: 3,gen_ratio: 8],
+ [drops: [],rs_div: 2,gen_ratio: 16]]
 
 @slow_drops.map! {|obj| obj = nil if obj[:row] > 60}
 next if drop[:row] > grid.length - 1
