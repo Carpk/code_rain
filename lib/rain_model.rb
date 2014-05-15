@@ -1,5 +1,8 @@
 class ModelRain
 
+  def initialize
+    @slow_drops = []
+  end
 
   def set_downfall(rain)
     top_fall = rain.pop
