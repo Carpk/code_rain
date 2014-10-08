@@ -13,7 +13,7 @@ class ViewRain
   end
 
 
-  def rain_new(size = 35)
+  def rain_new(size = 25)
     Array.new(size) { Array.new(size * 4," ") }
   end
 end
